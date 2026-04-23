@@ -1,0 +1,16 @@
+import {createRouter, createWebHistory} from 'vue-router'
+import CreateDishPage from "@/pages/CreateDishPage.vue";
+import GuestPage from "@/pages/GuestPage.vue";
+
+const routes = [
+    {path: '/create', component: CreateDishPage},
+    {path: '/guest', component: GuestPage},
+    {path: '/', redirect: '/create'},
+]
+
+export const router = createRouter({
+    history: createWebHistory(),
+    routes
+})
+
+export default router
