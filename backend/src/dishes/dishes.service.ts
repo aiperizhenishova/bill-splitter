@@ -19,8 +19,11 @@ export class DishesService {
         return this.dishRepository.findOneBy({id});
     }
 
-
     create(dish: Partial<Dish>): Promise<Dish> {
         return this.dishRepository.save(dish);
+    }
+
+    async delete(id:number): Promise<void> {
+        await this.dishRepository.delete(id);
     }
 }
