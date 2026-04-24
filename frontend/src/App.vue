@@ -1,5 +1,6 @@
 <template>
   <div class="app">
+
     <header class="header">
       <div class="header-inner">
         <div class="logo">
@@ -47,18 +48,20 @@ body {
 }
 
 .app {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 0 16px 40px;
+  display: flex;
+  flex-direction: column;
+  min-height: 40vh;
 }
 
 .header {
-  padding: 30px 0 24px;
+  padding: 20px 0;
+  position: sticky;
 }
 
 .header-inner {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   gap: 10px;
 }
 
@@ -91,7 +94,8 @@ h1 {
 .nav {
   display: flex;
   gap: 10px;
-  margin-bottom: 28px;
+  margin-bottom: 25px;
+  position: sticky;
 }
 
 .nav-link {
@@ -100,7 +104,7 @@ h1 {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  padding: 14px 12px;
+  padding: 8px 50px;
   border-radius: 16px;
   background: #FFFFFF;
   border: 1.5px solid #E0DDD6;
@@ -109,6 +113,7 @@ h1 {
   font-size: 14px;
   font-weight: 500;
   transition: all 0.2s ease;
+  position: sticky;
 }
 
 .nav-link:hover {
@@ -128,11 +133,11 @@ h1 {
 }
 
 .main {
-  width: 100%;
+  flex: 1;
+  max-width: 1200px;
   background: #FFFFFF;
   border-radius: 16px;
   border: 1.5px solid #E0DDD6;
-  padding: 10px;
-  min-height: 200px;
+  padding: 20px 25px;
 }
 </style>

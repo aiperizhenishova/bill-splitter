@@ -77,23 +77,26 @@ export default {
 
 <template>
   <div class="app">
+    <div class="addDish-container">
+      <p class="text">Добавить блюдо</p>
+      <input type="text" class="dishName" v-model="dishName" placeholder="название блюда: ">
+      <input type="number" class="price" v-model="price" placeholder="цена: ">
+      <p class = "error">{{error}}</p>
+      <button @click="addDish" type="button" class="addBtn">добавить</button>
+    </div>
 
-    <p>Добавить блюдо</p>
-    <input type="text" class="dishName" v-model="dishName" placeholder="название блюда: ">
-    <input type="number" class="price" v-model="price" placeholder="цена: ">
-    <p class = "error">{{error}}</p>
-    <button @click="addDish" type="button" class="addBtn">добавить</button>
-
-    <p>Список блюд: </p>
-    <div class="dishes" v-for="dish in dishes" :key="dish.id">
-      <div class="dishList" >
-        <p>{{dish.name}}</p>
-        <p>{{dish.price}}</p>
-        <button class="deleteBtn" @click="deleteDish(dish.id)" type="button" >X</button>
+    <div class="dishList-container">
+      <p class="text">Список блюд: </p>
+      <div class="dishes" v-for="dish in dishes" :key="dish.id">
+        <div class="dishList" >
+          <p class="name-dishList">{{dish.name}}</p>
+          <p class="price-dishList">{{dish.price}} сом</p>
+          <button class="deleteBtn" @click="deleteDish(dish.id)" type="button" >X</button>
+        </div>
       </div>
     </div>
 
-    <button @click="copyLink" type="button">Поделиться с гостями</button>
+    <button class="shareBtn" @click="copyLink" type="button">Поделиться с гостями</button>
     <p v-if="shareLink">{{ shareLink }}</p>
 
   </div>
@@ -102,30 +105,43 @@ export default {
 
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap');
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
 .app{
   width: 100%;
 }
-.dishName{
-  width: 70%;
-  margin: 10px;
-  padding: 5px 10px;
+.text{
+  padding: 0 10px;
+}
+.dishName,
+.price{
+  font-size: 15px;
+  width: 97%;
+  margin: 10px 40px 10px 10px;
+  padding: 8px 10px;
   border-radius: 10px;
   border: 1px solid #2D5A27;
   background-color: #F7F5F0;
+}
+.addDish-container,
+.dishList-container{
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
 }
 
-.price{
-  width: 70%;
-  margin: 10px;
-  padding: 5px 10px;
-  border-radius: 10px;
-  border: 1px solid #2D5A27;
-  background-color: #F7F5F0;
-}
 .addBtn{
-  width: 50%;
-  margin: 10px;
-  padding: 5px 10px;
+  margin-left: auto;
+  font-size: 15px;
+  width: 30%;
+  padding: 8px 10px;
   border-radius: 10px;
   color: #FFFFFF;
   border: 1px solid #2D5A27;
@@ -138,17 +154,39 @@ export default {
 
 .dishList{
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  flex-direction: row;
   color: black;
-  width: 400px;
-  border-radius: 10px;
+  width: 500px;
+  border-radius: 16px;
   border: solid 1px #2D5A27;
-  margin: 10px;
-  gap: 10px;
+  margin: 10px 30px;
+  padding: 8px 15px;
+  gap: 20px;
+}
+.name-dishList{
+  margin-right: auto;
+}
+.price-dishList{
+  display: flex;
+  margin-left: auto;
 }
 .deleteBtn{
-  width: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 25px;
+  border-radius: 10px;
+  border: 1px solid #2D5A27;
+}
+.shareBtn{
+  margin-left: auto;
+  font-size: 15px;
+  width: 30%;
+  padding: 8px 10px;
+  border-radius: 10px;
+  color: #FFFFFF;
+  border: 1px solid #2D5A27;
+  background-color: #2D5A27;
 }
 </style>
