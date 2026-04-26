@@ -138,7 +138,7 @@ export default {
 }
 
 .addBtn{
-  margin-left: auto;
+  margin: 10px 10px 10px 68.6%;
   font-size: 15px;
   width: 30%;
   padding: 8px 10px;
@@ -152,15 +152,15 @@ export default {
   width: 100%;
 }
 
-.dishList{
+.dishList[data-v-f0f573fa] {
   display: flex;
   flex-direction: row;
   color: black;
-  width: 500px;
+  width: 97%;
   border-radius: 16px;
   border: solid 1px #2D5A27;
-  margin: 10px 30px;
-  padding: 8px 15px;
+  margin: 10px 40px 10px 10px;
+  padding: 8px 10px;
   gap: 20px;
 }
 .name-dishList{

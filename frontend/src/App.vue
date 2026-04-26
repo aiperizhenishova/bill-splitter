@@ -50,7 +50,10 @@ body {
 .app {
   display: flex;
   flex-direction: column;
-  min-height: 40vh;
+  margin: 0 auto;
+  min-height: 100vh;
+  max-width: 100vw;
+  padding: 20px;
 }
 
 .header {
@@ -134,7 +137,7 @@ h1 {
 
 .main {
   flex: 1;
-  max-width: 1200px;
+  width: 100%;
   background: #FFFFFF;
   border-radius: 16px;
   border: 1.5px solid #E0DDD6;
