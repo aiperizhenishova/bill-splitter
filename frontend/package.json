@@ -9,6 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@nestjs/config": "^4.0.4",
+    "sass": "^1.99.0",
     "vue": "^3.5.32",
     "vue-router": "^5.0.6"
   },

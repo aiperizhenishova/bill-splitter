@@ -11,16 +11,16 @@ export class DishesService {
         private dishRepository: Repository<Dish>,
     ) {}
 
-    findAll(): Promise<Dish[]>{
-        return this.dishRepository.find();
+    async findAll(): Promise<Dish[]>{
+        return await this.dishRepository.find();
     }
 
-    findOne(id:number): Promise<Dish | null>{
-        return this.dishRepository.findOneBy({id});
+    async findOne(id:number): Promise<Dish | null>{
+        return await this.dishRepository.findOneBy({id});
     }
 
-    create(dish: Partial<Dish>): Promise<Dish> {
-        return this.dishRepository.save(dish);
+    async create(dish: Partial<Dish>): Promise<Dish> {
+        return await this.dishRepository.save(dish);
     }
 
     async delete(id:number): Promise<void> {

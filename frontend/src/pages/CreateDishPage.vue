@@ -1,192 +1,133 @@
-<script>
-export default {
-  data() {
-    return {
-      dishes: [],
-      error: '',
-      dishName: '',
-      price: ''
-    }
-  },
+<script setup lang="ts">
+import {ref, onMounted} from 'vue'
+import {useDishes} from "@/composables/useDishes";
 
-  mounted(){
-    fetch("http://localhost:3000/dishes")
-    .then(res => res.json())
-    .then(data => {
-      this.dishes = data;
-    })
-  },
+const {dishes, loading, error} = useDishes()
+const dishName = ref<string>('')
+const price = ref<string>('')
+const shareLink = ref<string>('')
 
-  methods: {
-    addDish() {
-      if (this.dishName === '') {
-        this.error = 'Введите название блюда: ';
-        return;
-      } else if (this.price === '') {
-        this.error = 'Введите цену: ';
-        return;
-      }
-
-
-      fetch("http://localhost:3000/dishes", {
-        method: 'POST',
-            headers:{
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: this.dishName,
-          price: this.price
-        })
-      })
-          .then(res => res.json())
-          .then(data => {
-            this.dishes.push(data);
-          })
-
-      this.error = ''
-      this.dishName = ''
-      this.price = ''
-    },
-
-    async deleteDish(id) {
-      try {
-        const response = await fetch(`http://localhost:3000/dishes/${id}`, {
-          method: 'DELETE'
-        });
-
-        if (!response.ok) {
-          throw new Error('Ошибка удаления');
-        }
-
-        this.dishes = this.dishes.filter(dish => dish.id !== id);
-        console.log('блюдо удалено');
-      } catch (error) {
-        console.log('не удалось удалить: ', error);
-      }
-    },
-
-    copyLink() {
-      this.shareLink = `${window.location.origin}/guest`
-      navigator.clipboard.writeText(this.shareLink)
-      alert('Ссылка скопирована!')
-    }
-
+async function addDish() {
+  if (dishName.value === '' || price.value === '') {
+    error.value = 'Поля не должны быть пустыми';
+    return;
   }
+
+  console.log('its work')
+
+  try {
+    const res = await fetch("http://localhost:3000/dishes", {
+      method: 'POST',
+      headers:{'Content-Type': 'application/json',},
+      body: JSON.stringify({
+        name: dishName.value,
+        price: price.value
+      })
+    })
+
+    const data = await res.json()
+    dishes.value = [...dishes.value, data]
+  } catch (error) {
+    error.value = error.message
+  } finally {
+    dishName.value = ''
+    price.value = ''
+  }
+}
+
+async function deleteDish(id: number): Promise<void> {
+  try {
+    const response = await fetch(`http://localhost:3000/dishes/${id}`, {
+      method: 'DELETE'
+    });
+
+    if (!response.ok) {
+      throw new Error('Ошибка удаления');
+    }
+
+    dishes.value = dishes.value.filter(dish => dish.id !== id);
+    console.log('блюдо удалено');
+  } catch (error) {
+    console.error('не удалось удалить: ', error);
+  }
+}
+
+function copyLink(): void {
+  shareLink.value = `${window.location.origin}/guest`
+  navigator.clipboard.writeText(shareLink.value)
+  alert('Ссылка скопирована!')
 }
 </script>
 
 <template>
   <div class="app">
-    <div class="addDish-container">
-      <p class="text">Добавить блюдо</p>
-      <input type="text" class="dishName" v-model="dishName" placeholder="название блюда: ">
-      <input type="number" class="price" v-model="price" placeholder="цена: ">
-      <p class = "error">{{error}}</p>
-      <button @click="addDish" type="button" class="addBtn">добавить</button>
+    <div class="add-dish">
+      <h3 class="add-dish__title">Добавить блюдо</h3>
+
+      <input type="text" v-model="dishName" placeholder="название блюда: " required>
+      <input type="number" v-model="price" placeholder="цена: " required>
+
+      <p class = "add-dish-error">{{error}}</p>
+      <button  class="add-dish__button" @click="addDish" type="button">добавить</button>
     </div>
 
-    <div class="dishList-container">
-      <p class="text">Список блюд: </p>
-      <div class="dishes" v-for="dish in dishes" :key="dish.id">
-        <div class="dishList" >
-          <p class="name-dishList">{{dish.name}}</p>
-          <p class="price-dishList">{{dish.price}} сом</p>
-          <button class="deleteBtn" @click="deleteDish(dish.id)" type="button" >X</button>
-        </div>
+    <div class="dish-list">
+      <h3 class="dish-list__title">Список блюд: </h3>
+
+      <p v-if="loading">Загрузка...</p>
+
+      <div class="dish-item list-item" v-for="dish in dishes" :key="dish.id">
+        <p class="dish-item name">{{dish.name}}</p>
+        <p class="dish-item price">{{dish.price}} сом</p>
+        <button class="dish-item__delete-btn" @click="deleteDish(dish.id)" type="button" >X</button>
       </div>
     </div>
 
-    <button class="shareBtn" @click="copyLink" type="button">Поделиться с гостями</button>
+    <button class="share-btn" @click="copyLink" type="button">Поделиться с гостями</button>
     <p v-if="shareLink">{{ shareLink }}</p>
 
   </div>
-
 </template>
 
 
-<style scoped>
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap');
+<style scoped lang="scss">
 
-*, *::before, *::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-.app{
-  width: 100%;
-}
-.text{
-  padding: 0 10px;
-}
-.dishName,
-.price{
-  font-size: 15px;
-  width: 97%;
-  margin: 10px 40px 10px 10px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  border: 1px solid #2D5A27;
-  background-color: #F7F5F0;
-}
-.addDish-container,
-.dishList-container{
-  width: 600px;
+.add-dish {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px;
-}
-
-.addBtn{
-  margin: 10px 10px 10px 68.6%;
-  font-size: 15px;
-  width: 30%;
-  padding: 8px 10px;
-  border-radius: 10px;
-  color: #FFFFFF;
-  border: 1px solid #2D5A27;
-  background-color: #2D5A27;
-}
-
-.dishes{
   width: 100%;
+
+  &__button {
+    width: 30%;
+    margin-left: auto;
+  }
 }
 
-.dishList[data-v-f0f573fa] {
-  display: flex;
-  flex-direction: row;
-  color: black;
-  width: 97%;
-  border-radius: 16px;
-  border: solid 1px #2D5A27;
-  margin: 10px 40px 10px 10px;
-  padding: 8px 10px;
-  gap: 20px;
+.add-dish-error {
+  color: red;
+  font-size: 13px;
+  padding: 0 10px;
 }
-.name-dishList{
-  margin-right: auto;
+
+.dish-list {
+  width: 100%;
+
+  &__title {
+    padding-bottom: 30px;
+  }
 }
-.price-dishList{
-  display: flex;
-  margin-left: auto;
+
+.dish-item{
+  &__delete-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height:27px;
+  }
 }
-.deleteBtn{
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 25px;
-  border-radius: 10px;
-  border: 1px solid #2D5A27;
-}
-.shareBtn{
-  margin-left: auto;
-  font-size: 15px;
+.share-btn {
   width: 30%;
-  padding: 8px 10px;
-  border-radius: 10px;
-  color: #FFFFFF;
-  border: 1px solid #2D5A27;
-  background-color: #2D5A27;
+  margin-left: auto;
 }
 </style>
