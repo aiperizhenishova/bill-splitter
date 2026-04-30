@@ -1,15 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500&display=swap');
 
 :root {
-  --color-primary: #2D5A27;
-  --color-bg: #F7F5F0;
-  --color-white: #FFFFFF;
+  --color-primary: #2d5a27;
+  --color-bg: #f7f5f0;
+  --color-white: #ffffff;
   --border-radius: 10px;
 
   --font-main: 'DM Sans';
 }
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
@@ -53,7 +55,7 @@ button {
   cursor: pointer;
 }
 
-.list-item{
+.list-item {
   display: flex;
   flex-direction: row;
   align-items: center;

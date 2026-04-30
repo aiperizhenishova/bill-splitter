@@ -5,8 +5,8 @@ import { DishesService } from './dishes.service';
 import { Dish } from './dish.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Dish])],
-    controllers: [DishesController],
-    providers: [DishesService],
+  imports: [TypeOrmModule.forFeature([Dish])],
+  controllers: [DishesController],
+  providers: [DishesService],
 })
 export class DishesModule {}

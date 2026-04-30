@@ -1,6 +1,5 @@
 <template>
   <div class="app">
-
     <header class="header">
       <div class="header__inner">
         <div class="logo">
@@ -28,14 +27,12 @@
   </div>
 </template>
 
-<script setup>
-</script>
+<script setup></script>
 
 <style scoped lang="scss">
-
 body {
-  background: #F7F5F0;
-  color: #1A1A1A;
+  background: #f7f5f0;
+  color: #1a1a1a;
   font-family: 'DM Sans', sans-serif;
   min-height: 100vh;
 }
@@ -59,7 +56,7 @@ body {
 
   &__icon {
     font-size: 20px;
-    color: #2D5A27;
+    color: #2d5a27;
   }
 }
 
@@ -68,12 +65,12 @@ h1 {
   font-size: 32px;
   font-weight: 400;
   letter-spacing: -0.5px;
-  color: #1A1A1A;
+  color: #1a1a1a;
 }
 
 .tagline {
   font-size: 14px;
-  color: #7A7A7A;
+  color: #7a7a7a;
   font-weight: 300;
   padding-left: 25px;
 }
@@ -93,9 +90,9 @@ h1 {
     gap: 8px;
     padding: 8px 50px;
     border-radius: 16px;
-    background: #FFFFFF;
-    border: 1.5px solid #E0DDD6;
-    color: #1A1A1A;
+    background: #ffffff;
+    border: 1.5px solid #e0ddd6;
+    color: #1a1a1a;
     text-decoration: none;
     font-size: 14px;
     font-weight: 500;
@@ -103,14 +100,14 @@ h1 {
     position: sticky;
 
     &:hover {
-      border-color: #2D5A27;
-      color: #2D5A27;
-      background: #E8F0E7;
+      border-color: #2d5a27;
+      color: #2d5a27;
+      background: #e8f0e7;
     }
 
     &.router-link-active {
-      background: #2D5A27;
-      border-color: #2D5A27;
+      background: #2d5a27;
+      border-color: #2d5a27;
       color: #fff;
     }
   }
@@ -123,9 +120,9 @@ h1 {
 .main {
   flex: 1;
   width: 100%;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 16px;
-  border: 1px solid #E0DDD6;
+  border: 1px solid #e0ddd6;
   padding: 20px 25px;
 }
 </style>

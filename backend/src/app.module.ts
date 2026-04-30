@@ -1,9 +1,8 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import {DishesModule} from "./dishes/dishes.module";
-import {Dish} from "./dishes/dish.entity";
+import { DishesModule } from './dishes/dishes.module';
+import { Dish } from './dishes/dish.entity';
 import { ConfigModule } from '@nestjs/config';
-
 
 @Module({
   imports: [
@@ -18,7 +17,7 @@ import { ConfigModule } from '@nestjs/config';
       entities: [Dish],
       synchronize: false,
     }),
-      DishesModule
-  ]
+    DishesModule,
+  ],
 })
 export class AppModule {}
