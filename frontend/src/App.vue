@@ -40,15 +40,6 @@ body {
   min-height: 100vh;
 }
 
-.app {
-  display: flex;
-  flex-direction: column;
-  margin: 0 auto;
-  min-height: 100vh;
-  max-width: 100vw;
-  padding: 20px;
-}
-
 .header {
   padding: 20px 0;
   position: sticky;

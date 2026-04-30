@@ -9,7 +9,7 @@ export function useDishes(){
     onMounted(async () => {
         loading.value = true
         try {
-            const res = await fetch("http://localhost:3000/dishes")
+            const res = await fetch(`${import.meta.env.VITE_API_URL}/dishes`)
             dishes.value = await res.json()
         } catch (e) {
             error.value = "не удалось загрузить данные"

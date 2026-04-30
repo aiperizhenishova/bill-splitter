@@ -16,7 +16,7 @@ async function addDish() {
   console.log('its work')
 
   try {
-    const res = await fetch("http://localhost:3000/dishes", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/dishes`,  {
       method: 'POST',
       headers:{'Content-Type': 'application/json',},
       body: JSON.stringify({
@@ -37,7 +37,7 @@ async function addDish() {
 
 async function deleteDish(id: number): Promise<void> {
   try {
-    const response = await fetch(`http://localhost:3000/dishes/${id}`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/dishes/${id}`, {
       method: 'DELETE'
     });
 
@@ -60,7 +60,7 @@ function copyLink(): void {
 </script>
 
 <template>
-  <div class="app">
+  <div class="add-dish-page">
     <div class="add-dish">
       <h3 class="add-dish__title">Добавить блюдо</h3>
 
@@ -91,6 +91,15 @@ function copyLink(): void {
 
 
 <style scoped lang="scss">
+
+.add-dish-page {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  min-height: 100vh;
+  max-width: 100vw;
+  padding: 20px;
+}
 
 .add-dish {
   display: flex;
