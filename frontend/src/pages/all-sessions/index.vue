@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import AppHeader from '@/widgets/app-header/index.vue';
-
-defineOptions({ name: 'AllSessionsPage' });
 import { ref, onMounted, computed } from 'vue';
 import { api } from '@/shared/api/instance';
 import { useToast } from 'vue-toastification';
@@ -18,6 +16,9 @@ import router from '@/app/router';
 import type { Session } from '@/types/session';
 import ConfirmModal from '@/shared/ui/ConfirmModal.vue';
 import { useAuth } from '@/entities/user';
+import BaseInput from '@/shared/ui/BaseInput.vue';
+
+defineOptions({ name: 'AllSessionsPage' });
 
 const sessions = ref<Session[]>([]);
 const toast = useToast();
@@ -145,11 +146,11 @@ onMounted(() => {
         </div>
 
         <div class="all-sessions__filters">
-          <input
+          <BaseInput
             v-model="searchQuery"
+            class="all-sessions__search-input"
             type="text"
             placeholder="Поиск по названию"
-            class="all-sessions__search"
           />
 
           <div class="all-sessions__tabs">
@@ -160,6 +161,7 @@ onMounted(() => {
             >
               Все
             </button>
+
             <button
               class="all-sessions__tab"
               :class="{
@@ -169,6 +171,7 @@ onMounted(() => {
             >
               Активные
             </button>
+
             <button
               class="all-sessions__tab"
               :class="{
@@ -286,6 +289,10 @@ onMounted(() => {
     flex-shrink: 0;
     border-radius: var(--border-radius-md);
 
+    &--go-forward {
+      cursor: pointer;
+    }
+
     &--logout {
       position: absolute;
       left: 1rem;
@@ -323,19 +330,8 @@ onMounted(() => {
     margin-bottom: 1rem;
   }
 
-  &__search {
-    width: 100%;
-    padding: 0.7rem 1rem;
-    margin: 1rem 0;
-    border-radius: var(--border-radius-md);
-    border: 0.1rem solid var(--color-secondary);
-    font-size: var(--font-size);
-    color: var(--color-dark);
-
-    &:focus {
-      outline: none;
-      border-color: var(--color-primary);
-    }
+  &__search-input {
+    margin: 1.5rem 0 0.5rem;
   }
 
   &__tabs {
@@ -387,7 +383,6 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     color: var(--color-muted-purple);
-    cursor: pointer;
   }
 
   &__participants-container {

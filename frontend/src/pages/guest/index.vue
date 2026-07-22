@@ -1,7 +1,6 @@
 <script setup lang="ts">
+import BaseInput from '@/shared/ui/BaseInput.vue';
 import AppHeader from '@/widgets/app-header/index.vue';
-
-defineOptions({ name: 'GuestPage' });
 import { ref, computed, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { IconReload } from '@tabler/icons-vue';
@@ -9,6 +8,8 @@ import JoinForm from '@/widgets/join-form/index.vue';
 import { useParticipant } from '@/features/join-session';
 import { useSession } from '@/entities/session';
 import BaseButton from '@/shared/ui/BaseButton.vue';
+
+defineOptions({ name: 'GuestPage' });
 
 const route = useRoute();
 const sessionId = route.params.sessionId as string;
@@ -64,7 +65,7 @@ onMounted(async () => {
 
       <div class="guest-page__qr-card">
         <div v-if="qrUrl" class="guest-page__qr">
-          <img v-if="qrUrl" class="guest-page__qr-img" :src="qrUrl" alt="QR" />
+          <img class="guest-page__qr-img" :src="qrUrl" alt="QR" />
           <div class="guest-page__total">
             <h2 class="guest-page__total-value">{{ total }} сом</h2>
           </div>
@@ -74,12 +75,12 @@ onMounted(async () => {
 
         <ul v-else class="guest-page__list">
           <li v-for="dish in dishes" :key="dish.id" class="guest-page__item">
-            <input
-              :checked="currentParticipant?.selections.includes(dish.id)"
-              class="guest-page__checkbox"
+            <BaseInput
               type="checkbox"
+              class="guest-page__checkbox"
+              :model-value="currentParticipant?.selections.includes(dish.id)"
               @change="
-                (e) =>
+                (e: Event) =>
                   handleSelectDish(
                     dish.id,
                     (e.target as HTMLInputElement).checked,
@@ -184,7 +185,7 @@ onMounted(async () => {
     display: flex;
     align-items: center;
     gap: 1rem;
-    padding: 0.6rem 1rem 0.6rem 1rem;
+    padding: 0.6rem 1rem;
     border-bottom: 0.1rem solid var(--color-secondary);
 
     &:last-child {
@@ -193,14 +194,26 @@ onMounted(async () => {
   }
 
   &__checkbox {
-    width: 1.3rem;
-    height: 1.3rem;
-    margin: 0;
-    accent-color: var(--color-secondary);
+    width: auto;
+    flex-shrink: 0;
+
+    input {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.3rem;
+      height: 1.3rem;
+      min-height: auto;
+      padding: 0;
+      margin: 0;
+      cursor: pointer;
+      accent-color: var(--color-secondary);
+    }
   }
 
   &__name {
     flex: 1;
+    color: var(--color-dark);
   }
 
   &__info {
@@ -208,10 +221,6 @@ onMounted(async () => {
     max-width: 35rem;
     display: flex;
     flex-direction: column;
-  }
-
-  &__name {
-    color: var(--color-dark);
   }
 
   &__price {

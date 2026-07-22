@@ -25,7 +25,7 @@ body {
   display: flex;
   flex-direction: column;
   margin: 0 auto;
-  font-weight: var(--font-weight-regular );
+  font-weight: var(--font-weight-regular);
   border: 0.1rem solid var(--color-light-purple-gray);
   border-top: none;
   border-bottom: none;
@@ -33,11 +33,7 @@ body {
 
 input {
   outline: none;
-  border: none;
-  border-radius: var(--border-radius-sm);
-  background-color: var(--color-white);
-  font-size: var(--font-size-sm);
-  padding: 1rem 2rem;
+  font-family: inherit;
 }
 
 .qr {

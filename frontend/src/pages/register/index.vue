@@ -1,19 +1,13 @@
 <script setup lang="ts">
 import BaseButton from '@/shared/ui/BaseButton.vue';
-
-defineOptions({ name: 'RegisterPage' });
-
-import {
-  IconEye,
-  IconEyeOff,
-  IconMoonFilled,
-  IconSparkle,
-  IconSunFilled,
-} from '@tabler/icons-vue';
+import { IconMoonFilled, IconSparkle, IconSunFilled } from '@tabler/icons-vue';
 import { useTheme } from '@/features/toggle-theme';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuth } from '@/entities/user';
+import BaseInput from '@/shared/ui/BaseInput.vue';
+
+defineOptions({ name: 'RegisterPage' });
 
 const { toggleTheme, isDark } = useTheme();
 const router = useRouter();
@@ -21,7 +15,6 @@ const { register, loading } = useAuth();
 const email = ref('');
 const name = ref('');
 const password = ref('');
-const showPassword = ref(false);
 
 async function handleSubmit() {
   const ok = await register(email.value, name.value, password.value);
@@ -40,7 +33,7 @@ async function handleSubmit() {
 
     <BaseButton
       variant="icon"
-      class="header__theme-toggle"
+      class="register-page__theme-toggle"
       @click="toggleTheme()"
     >
       <IconSunFilled v-if="isDark" />
@@ -53,37 +46,16 @@ async function handleSubmit() {
     </div>
 
     <form class="register-page__form" @submit.prevent="handleSubmit">
-      <input
-        v-model="name"
-        class="register-page__input"
-        type="text"
-        placeholder="Ваше имя"
-        required
-      />
-      <input
-        v-model="email"
-        class="register-page__input"
-        type="email"
-        placeholder="Email"
-        required
-      />
+      <BaseInput v-model="name" type="text" placeholder="Ваше имя" required />
 
-      <div class="register-page__password">
-        <input
-          v-model="password"
-          class="register-page__input register-page__input--password"
-          :type="showPassword ? 'text' : 'password'"
-          placeholder="Пароль"
-        />
-        <button
-          type="button"
-          class="register-page__eye-btn"
-          @click="showPassword = !showPassword"
-        >
-          <IconEye v-if="showPassword" />
-          <IconEyeOff v-else />
-        </button>
-      </div>
+      <BaseInput v-model="email" type="email" placeholder="Email" required />
+
+      <BaseInput
+        v-model="password"
+        type="password"
+        placeholder="Пароль"
+        required
+      />
 
       <BaseButton
         variant="primary"
@@ -130,7 +102,6 @@ async function handleSubmit() {
     letter-spacing: -0.03rem;
   }
 
-  &__tagline,
   &__text {
     font-size: var(--font-size);
     font-weight: var(--font-weight-regular);
@@ -169,53 +140,13 @@ async function handleSubmit() {
   }
 
   &__form {
+    max-width: 28rem;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0.7rem;
-    width: 100%;
-  }
-
-  &__password {
-    position: relative;
-    width: 100%;
-    max-width: 28rem;
-  }
-
-  &__input {
-    min-height: 3.5rem;
-    width: 100%;
-    max-width: 28rem;
-    border-radius: var(--border-radius-md);
-    border: 0.1rem solid var(--color-secondary);
-    padding: 0 1rem;
-    color: var(--color-dark);
-
-    &:hover,
-    &:focus {
-      border-color: var(--color-primary);
-    }
-
-    &--password {
-      max-width: 100%;
-      padding-right: 3rem;
-    }
-  }
-
-  &__eye-btn {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    color: var(--color-muted-purple);
   }
 
   &__button {
@@ -230,13 +161,6 @@ async function handleSubmit() {
     color: var(--color-primary);
     font-size: var(--font-size-sm);
     text-decoration: none;
-  }
-
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0px 1000px var(--color-white) inset !important;
-    -webkit-text-fill-color: var(--color-dark) !important;
   }
 }
 </style>

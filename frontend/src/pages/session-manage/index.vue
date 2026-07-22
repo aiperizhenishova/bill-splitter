@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import AppHeader from '@/widgets/app-header/index.vue';
-
-defineOptions({ name: 'SessionManagePage' });
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import {
@@ -20,6 +18,9 @@ import { useDishes } from '@/features/manage-dishes';
 import { Dish } from '@/entities/dish';
 import QrUpload from '@/widgets/qr-upload/index.vue';
 import { api } from '@/shared/api/instance';
+import BaseInput from '@/shared/ui/BaseInput.vue';
+
+defineOptions({ name: 'SessionManagePage' });
 
 const route = useRoute();
 const sessionId = route.params.sessionId as string;
@@ -141,10 +142,10 @@ onMounted(async () => {
             {{ summary.sessionName }}
           </h2>
           <div v-else class="session-manage-page__name-edit">
-            <input
+            <BaseInput
               v-model="editedName"
-              @keyup.enter="saveEditName"
               class="session-manage-page__name-input"
+              @keyup.enter="saveEditName"
             />
             <BaseButton
               class="session-manage-page__name-save"
@@ -205,17 +206,17 @@ onMounted(async () => {
           class="session-manage-page__dish-form"
           @submit.prevent="editingDishId ? handleSaveEdit() : handleAddDish()"
         >
-          <div class="session-manage-page__dish-inputs">
-            <input
+          <div class="session-manage-page__dish-fields">
+            <BaseInput
               v-model="newDishName"
-              class="session-manage-page__dish-input"
               placeholder="Название"
+              type="text"
             />
-            <input
+
+            <BaseInput
               v-model.number="newDishPrice"
-              class="session-manage-page__dish-input"
-              type="number"
               placeholder="Цена"
+              type="number"
             />
           </div>
 
@@ -344,16 +345,22 @@ onMounted(async () => {
   }
 
   &__name {
-    padding: 0 0.5rem;
+    margin: 0.5rem;
     color: var(--color-dark);
     font-size: var(--font-size-md);
     font-weight: var(--font-weight-medium);
     cursor: pointer;
   }
 
+  &__name-edit {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+  }
+
   &__name-save {
-    margin: 1rem;
-    padding: 0.8rem;
+    margin: 0.5rem;
+    padding: 1rem;
   }
 
   &__copy-button {
@@ -440,30 +447,11 @@ onMounted(async () => {
     gap: 0.5rem;
   }
 
-  &__dish-inputs {
+  &__dish-fields {
     display: flex;
+    flex-direction: row;
     gap: 0.5rem;
-  }
-
-  &__dish-input {
-    flex: 1;
-    min-width: 0;
-    width: 100%;
-    min-height: 2.5rem;
-    padding: 0.75rem 1rem;
-    border: 0.1rem solid var(--color-secondary);
-    border-radius: var(--border-radius-lg);
-    font-size: var(--font-size-sm);
-    color: var(--color-dark);
-
-    &::placeholder {
-      color: var(--color-muted-purple);
-    }
-
-    &:focus {
-      outline: none;
-      border-color: var(--color-primary);
-    }
+    margin: 1rem 0;
   }
 
   &__dish-submit {

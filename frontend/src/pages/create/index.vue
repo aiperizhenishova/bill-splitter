@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineOptions({ name: 'CreatePage' });
+import BaseInput from '@/shared/ui/BaseInput.vue';
 import { computed, ref } from 'vue';
 import {
   IconPlus,
@@ -10,13 +10,14 @@ import {
   IconExclamationCircle,
   IconUserCheck,
 } from '@tabler/icons-vue';
-
 import AppHeader from '@/widgets/app-header/index.vue';
 import AppFooter from '@/widgets/app-footer/index.vue';
 import QrUpload from '@/widgets/qr-upload/index.vue';
 import BaseButton from '@/shared/ui/BaseButton.vue';
 import { useEditDish, useDishes } from '@/features/manage-dishes';
 import { useCreateSession } from '@/features/create-session';
+
+defineOptions({ name: 'CreatePage' });
 
 const {
   sessionName,
@@ -86,9 +87,9 @@ function handleFinish() {
 
     <div class="add-dish-page__content">
       <div v-if="!isSessionStarted" class="add-dish-page__start">
-        <input
+        <BaseInput
           v-model="sessionName"
-          class="add-dish-page__input add-dish-page__input--session-name"
+          class="add-dish-page__start-input"
           type="text"
           placeholder="Название сессии"
           required
@@ -101,39 +102,42 @@ function handleFinish() {
         >
           Начать
         </BaseButton>
-
-        <div v-if="isGuest" class="add-dish-page__guest-block">
-          <div class="add-dish-page__guest-hint">
-            <IconExclamationCircle />
-            <p>
-              Сохраните ссылку на сессию — без аккаунта она не появится в вашем
-              списке сессий.
-            </p>
-          </div>
-          <RouterLink to="/register" class="add-dish-page__register-link">
-            <IconUserCheck />
-            Зарегистрироваться, чтобы не терять сессии
-          </RouterLink>
-        </div>
       </div>
 
-      <template v-else>
+      <div
+        v-if="isGuest && !isSessionStarted"
+        class="add-dish-page__guest-block"
+      >
+        <div class="add-dish-page__guest-hint">
+          <IconExclamationCircle />
+          <p>
+            Сохраните ссылку на сессию — без аккаунта она не появится в вашем
+            списке сессий.
+          </p>
+        </div>
+
+        <RouterLink to="/register" class="add-dish-page__register-link">
+          <IconUserCheck />
+          Зарегистрироваться, чтобы не терять сессии
+        </RouterLink>
+      </div>
+
+      <template v-else-if="isSessionStarted">
         <QrUpload
           :session-id="sessionId"
           :qr-url="qrUrl"
           @uploaded="handleQrUploaded"
         />
         <div class="add-dish-page__header">
-          <input
+          <BaseInput
             v-model="dishName"
-            class="add-dish-page__input add-dish-page__input--name"
             type="text"
             placeholder="Название блюда"
             required
           />
-          <input
+
+          <BaseInput
             v-model="price"
-            class="add-dish-page__input add-dish-page__input--price"
             type="number"
             placeholder="Цена"
             required
@@ -190,16 +194,15 @@ function handleFinish() {
             <div class="add-dish-page__edit-actions">
               <h3 class="add-dish-page__title">Редактировать</h3>
               <div class="add-dish-page__fields">
-                <input
+                <BaseInput
                   v-model="editName"
-                  class="add-dish-page__input add-dish-page__input--edit-name"
                   type="text"
                   placeholder="Название блюда"
                   required
                 />
-                <input
+
+                <BaseInput
                   v-model="editPrice"
-                  class="add-dish-page__input add-dish-page__input--edit-price"
                   type="number"
                   placeholder="Цена"
                   required
@@ -291,10 +294,18 @@ function handleFinish() {
   }
 
   &__start {
+    width: 100%;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     margin-top: 2rem;
+  }
+
+  &__start-input {
+    max-width: 22rem;
+    width: 100%;
   }
 
   &__guest-block {
@@ -302,7 +313,7 @@ function handleFinish() {
     flex-direction: column;
     align-items: center;
     gap: 0.5rem;
-    margin: 4rem 2rem;
+    margin: 7rem 2rem;
   }
 
   &__guest-hint {
@@ -428,41 +439,6 @@ function handleFinish() {
     gap: 0.5rem;
   }
 
-  &__input {
-    min-height: 3.5rem;
-    border-radius: var(--border-radius-md);
-    border: 0.1rem solid transparent;
-    color: var(--color-dark);
-
-    &--name {
-      width: 0;
-      flex: 2;
-      max-width: 15rem;
-    }
-
-    &--price {
-      width: 0;
-      flex: 1;
-    }
-
-    &--session-name {
-      width: 100%;
-    }
-
-    &--edit-name,
-    &--edit-price {
-      background-color: var(--color-light-lavender);
-    }
-
-    &:hover {
-      border-color: var(--color-primary);
-    }
-
-    &::placeholder {
-      color: var(--color-dark);
-      opacity: 1;
-    }
-  }
   &__edit-buttons {
     display: flex;
     justify-content: flex-end;
@@ -477,8 +453,10 @@ function handleFinish() {
       max-width: 8.2rem;
     }
     &--start {
-      margin-top: 0.5rem;
-      max-width: 100%;
+      flex: none;
+      width: auto;
+      padding: 0 1.5rem;
+      margin-top: 0;
     }
     &--cancel {
       max-width: 6.2rem;
@@ -502,13 +480,6 @@ function handleFinish() {
       flex-direction: column;
       align-items: stretch;
       gap: 0.7rem;
-    }
-
-    &__input--name,
-    &__input--price {
-      width: 100%;
-      max-width: 100%;
-      flex: none;
     }
 
     &__button--add {

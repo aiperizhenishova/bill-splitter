@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -37,8 +38,14 @@ export class SessionsController {
   @UseGuards(OptionalJwtAuthGuard)
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() dto: CreateSessionDto, @Req() req: RequestWithUser) {
-    const ownerId = req.user?.userId ?? randomUUID();
+  create(
+    @Body() dto: CreateSessionDto,
+    @Req() req: RequestWithUser,
+    @Query('isGuest') isGuest?: string,
+  ) {
+    const ownerId =
+      isGuest === 'true' ? randomUUID() : (req.user?.userId ?? randomUUID());
+
     return this.sessionService.createSession(dto, ownerId);
   }
 

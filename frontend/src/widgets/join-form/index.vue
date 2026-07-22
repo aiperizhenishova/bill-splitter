@@ -1,9 +1,11 @@
 <script setup lang="ts">
-defineOptions({ name: 'JoinForm' });
+import BaseInput from '@/shared/ui/BaseInput.vue';
 import { ref } from 'vue';
 import { IconSparkle, IconMoonFilled, IconSunFilled } from '@tabler/icons-vue';
 import BaseButton from '@/shared/ui/BaseButton.vue';
 import { useTheme } from '@/features/toggle-theme';
+
+defineOptions({ name: 'JoinForm' });
 
 const name = ref('');
 const emit = defineEmits<{ join: [name: string] }>();
@@ -29,7 +31,13 @@ const { toggleTheme, isDark } = useTheme();
     <p class="join-page__tagline">Разделите счёт честно и без споров</p>
 
     <div class="join-page__form">
-      <input v-model="name" class="join-page__name-input" placeholder="Имя" />
+      <BaseInput
+        v-model="name"
+        class="join-page__name-input"
+        type="text"
+        placeholder="Имя"
+        required
+      />
 
       <BaseButton
         class="join-page__button-join"
@@ -93,6 +101,8 @@ const { toggleTheme, isDark } = useTheme();
   }
 
   &__form {
+    max-width: 28rem;
+    width: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -100,13 +110,7 @@ const { toggleTheme, isDark } = useTheme();
   }
 
   &__name-input {
-    max-width: 20rem;
-    border-radius: 5rem;
-    color: var(--color-muted-dark);
-
-    ::placeholder {
-      color: var(--color-muted-purple);
-    }
+    flex: 1;
   }
 
   &__button-join {

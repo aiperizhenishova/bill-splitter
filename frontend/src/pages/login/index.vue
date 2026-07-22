@@ -1,25 +1,18 @@
 <script setup lang="ts">
-import BaseButton from '@/shared/ui/BaseButton.vue';
-
 defineOptions({ name: 'LoginPage' });
 
-import {
-  IconMoonFilled,
-  IconSparkle,
-  IconSunFilled,
-  IconEye,
-  IconEyeOff,
-} from '@tabler/icons-vue';
+import BaseButton from '@/shared/ui/BaseButton.vue';
+import { IconMoonFilled, IconSparkle, IconSunFilled } from '@tabler/icons-vue';
 import { useTheme } from '@/features/toggle-theme';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuth } from '@/entities/user';
+import BaseInput from '@/shared/ui/BaseInput.vue';
 
 const { toggleTheme, isDark } = useTheme();
 const router = useRouter();
 const { login, loading } = useAuth();
 const email = ref('');
-const showPassword = ref(false);
 const password = ref('');
 
 async function handleSubmit() {
@@ -52,25 +45,13 @@ async function handleSubmit() {
     </div>
 
     <form class="login-page__form" @submit.prevent="handleSubmit">
-      <input
-        v-model="email"
-        class="login-page__input"
-        type="email"
-        placeholder="Email"
+      <BaseInput v-model="email" type="email" placeholder="Email" required />
+      <BaseInput
+        v-model="password"
+        type="password"
+        placeholder="Пароль"
         required
       />
-      <div class="login-page__input login-page__password-field">
-        <input
-          v-model="password"
-          class="login-page__password-input"
-          :type="showPassword ? 'text' : 'password'"
-          placeholder="Пароль"
-        />
-        <button type="button" @click="showPassword = !showPassword">
-          <IconEye v-if="showPassword" />
-          <IconEyeOff v-else />
-        </button>
-      </div>
 
       <BaseButton
         variant="primary"
@@ -117,20 +98,11 @@ async function handleSubmit() {
     letter-spacing: -0.03rem;
   }
 
-  &__tagline,
   &__text {
     font-size: var(--font-size);
     font-weight: var(--font-weight-regular);
     text-align: center;
     color: var(--color-muted-purple);
-  }
-
-  &__headline {
-    font-family: var(--font-heading), serif;
-    color: var(--color-primary);
-    font-size: var(--font-size-lg);
-    font-weight: var(--font-weight-semibold);
-    letter-spacing: -0.03rem;
   }
 
   &__theme-toggle {
@@ -146,6 +118,14 @@ async function handleSubmit() {
     border-radius: var(--border-radius-md);
   }
 
+  &__headline {
+    font-family: var(--font-heading), serif;
+    color: var(--color-primary);
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-semibold);
+    letter-spacing: -0.03rem;
+  }
+
   &__heading {
     display: flex;
     flex-direction: column;
@@ -156,51 +136,13 @@ async function handleSubmit() {
   }
 
   &__form {
+    max-width: 28rem;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0.7rem;
-    width: 100%;
-  }
-
-  &__input {
-    min-height: 3.5rem;
-    width: 100%;
-    max-width: 28rem;
-    border-radius: var(--border-radius-md);
-    border: 0.1rem solid var(--color-secondary);
-
-    &:hover,
-    &:focus {
-      border-color: var(--color-primary);
-    }
-  }
-
-  &__password-field {
-    position: relative;
-
-    button {
-      position: absolute;
-      right: 0.8rem;
-      top: 50%;
-      transform: translateY(-50%);
-      border: none;
-      background: none;
-      cursor: pointer;
-    }
-  }
-  &__password-input {
-    min-height: 3.5rem;
-    height: 100%;
-    width: 100%;
-    max-width: 28rem;
-    border: none;
-    outline: none;
-    background: transparent;
-    padding: 1rem 2rem;
-    color: var(--color-dark);
-    border-radius: var(--border-radius-md);
   }
 
   &__button {
@@ -215,13 +157,6 @@ async function handleSubmit() {
     color: var(--color-primary);
     font-size: var(--font-size-sm);
     text-decoration: none;
-  }
-
-  input:-webkit-autofill,
-  input:-webkit-autofill:hover,
-  input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0px 1000px var(--color-white) inset !important;
-    -webkit-text-fill-color: var(--color-dark) !important;
   }
 }
 </style>
