@@ -16,6 +16,7 @@ const { toggleTheme, isDark } = useTheme();
   <div class="join-page">
     <BaseButton
       variant="icon"
+      size="sm"
       class="join-page__theme-toggle"
       @click="toggleTheme()"
     >
@@ -40,8 +41,8 @@ const { toggleTheme, isDark } = useTheme();
       />
 
       <BaseButton
-        class="join-page__button-join"
         variant="primary"
+        size="md"
         :disabled="!name.trim()"
         @click="emit('join', name.trim())"
       >
@@ -68,7 +69,6 @@ const { toggleTheme, isDark } = useTheme();
     right: 1rem;
     width: 2.5rem;
     height: 2.5rem;
-    padding: 0.6rem;
     color: var(--color-muted-purple);
     border: 0.1rem solid var(--color-light-purple-gray);
     border-radius: var(--border-radius-md);
@@ -111,12 +111,6 @@ const { toggleTheme, isDark } = useTheme();
 
   &__name-input {
     flex: 1;
-  }
-
-  &__button-join {
-    min-height: 3.2rem;
-    max-width: 7.3rem;
-    padding: 0 2rem;
   }
 }
 </style>

@@ -100,6 +100,7 @@ onMounted(async () => {
       <div class="guest-page__footer">
         <BaseButton
           variant="secondary"
+          size="md"
           class="guest-page__button guest-page__button--refresh"
           @click="getSession(false)"
         >
@@ -196,6 +197,8 @@ onMounted(async () => {
   &__checkbox {
     width: auto;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
 
     input {
       display: flex;
@@ -235,7 +238,6 @@ onMounted(async () => {
 
   &__button {
     width: 100%;
-    min-height: 3.5rem;
 
     &--refresh {
       max-width: 34rem;

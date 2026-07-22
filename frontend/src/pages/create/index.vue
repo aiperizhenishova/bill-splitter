@@ -97,6 +97,7 @@ function handleFinish() {
 
         <BaseButton
           variant="primary"
+          size="md"
           class="add-dish-page__button add-dish-page__button--start"
           @click="handleStart"
         >
@@ -145,6 +146,7 @@ function handleFinish() {
 
           <BaseButton
             variant="primary"
+            size="md"
             class="add-dish-page__button add-dish-page__button--add"
             @click="handleAdd"
           >
@@ -168,18 +170,10 @@ function handleFinish() {
               <p class="add-dish-page__price">{{ dish.price }} сом</p>
             </div>
 
-            <BaseButton
-              variant="icon"
-              style="flex-shrink: 0"
-              @click="startEdit(dish)"
-            >
+            <BaseButton variant="icon" size="md" @click="startEdit(dish)">
               <IconPencilFilled />
             </BaseButton>
-            <BaseButton
-              variant="icon"
-              style="flex-shrink: 0"
-              @click="deleteDish(dish.id)"
-            >
+            <BaseButton variant="icon" size="md" @click="deleteDish(dish.id)">
               <IconTrashFilled />
             </BaseButton>
           </li>
@@ -212,15 +206,17 @@ function handleFinish() {
 
             <div class="add-dish-page__edit-buttons">
               <BaseButton
-                class="add-dish-page__button add-dish-page__button--cancel"
                 variant="ghost"
+                size="md"
+                class="add-dish-page__button add-dish-page__button--cancel"
                 @click="cancelEdit()"
               >
                 Отменить
               </BaseButton>
               <BaseButton
-                class="add-dish-page__button add-dish-page__button--save"
                 variant="primary"
+                size="md"
+                class="add-dish-page__button add-dish-page__button--save"
                 @click="handleEdit()"
               >
                 Сохранить
@@ -231,8 +227,9 @@ function handleFinish() {
 
         <div v-if="dishes.length" class="add-dish-page__session">
           <BaseButton
-            class="add-dish-page__button add-dish-page__button--create"
             variant="secondary"
+            size="md"
+            class="add-dish-page__button add-dish-page__button--create"
             @click="handleFinish()"
           >
             Готово
@@ -447,7 +444,6 @@ function handleFinish() {
 
   &__button {
     width: 100%;
-    min-height: 3.5rem;
 
     &--add {
       max-width: 8.2rem;
@@ -455,16 +451,6 @@ function handleFinish() {
     &--start {
       flex: none;
       width: auto;
-      padding: 0 1.5rem;
-      margin-top: 0;
-    }
-    &--cancel {
-      max-width: 6.2rem;
-      min-height: 2.5rem;
-    }
-
-    &--save {
-      max-width: 6.4rem;
     }
   }
 

@@ -1,10 +1,11 @@
 <script setup lang="ts">
-defineOptions({ name: 'QrUpload' });
 import { ref } from 'vue';
 import { IconFileUploadFilled } from '@tabler/icons-vue';
 import { useToast } from 'vue-toastification';
 import { api } from '@/shared/api/instance';
 import { formatSize } from '@/shared/lib/formatSize';
+
+defineOptions({ name: 'QrUpload' });
 
 const props = defineProps<{
   sessionId: string;
@@ -145,15 +146,17 @@ async function onQrUpload(e: globalThis.Event) {
   &__upload-label {
     display: flex;
     justify-content: center;
+    align-items: center;
     padding: 0.7rem 1.5rem;
-    max-width: 7rem;
-    min-height: 2.5rem;
+    max-width: 8.2rem;
+    height: 3.5rem;
     margin-left: auto;
     font-weight: var(--font-weight-medium);
     color: var(--color-muted-purple);
     background-color: var(--color-secondary);
     border-radius: var(--border-radius-md);
     border: 0.1rem solid transparent;
+    cursor: pointer;
 
     &:hover {
       border-color: var(--color-primary);

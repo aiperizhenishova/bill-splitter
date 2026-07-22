@@ -1,5 +1,6 @@
 <script setup lang="ts">
 defineOptions({ name: 'BaseButton' });
+
 type ButtonVariants =
   | 'primary'
   | 'secondary'
@@ -8,13 +9,31 @@ type ButtonVariants =
   | 'ghost'
   | 'toast';
 
-withDefaults(defineProps<{ variant?: ButtonVariants }>(), {
-  variant: 'primary',
-});
+type ButtonSize = 'sm' | 'md' | 'lg';
+
+const props = withDefaults(
+  defineProps<{
+    variant?: ButtonVariants;
+    size?: ButtonSize;
+    isIcon?: boolean;
+  }>(),
+  {
+    variant: 'primary',
+    size: 'md',
+    isIcon: false,
+  },
+);
 </script>
 
 <template>
-  <button :class="['base-btn', `base-btn--${variant}`]">
+  <button
+    :class="[
+      'base-btn',
+      isIcon || variant === 'icon'
+        ? 'base-btn--icon'
+        : [`base-btn--${variant}`, `base-btn--${size}`],
+    ]"
+  >
     <slot />
   </button>
 </template>
@@ -25,11 +44,12 @@ withDefaults(defineProps<{ variant?: ButtonVariants }>(), {
   align-items: center;
   justify-content: center;
   gap: 0.3rem;
-  font-size: var(--font-size);
+  font-size: var(--font-size-sm);
   padding: 0.6rem 1rem;
   border-radius: var(--border-radius-md);
   border: 0.1rem solid transparent;
   cursor: pointer;
+  height: 3.5rem;
 
   &--primary {
     background-color: var(--color-primary);
@@ -55,7 +75,9 @@ withDefaults(defineProps<{ variant?: ButtonVariants }>(), {
   }
 
   &--icon {
-    padding: 0.2rem;
+    padding: 0;
+    width: 2rem;
+    height: 2rem;
     background-color: var(--color-white);
     border: none;
     color: var(--color-muted-dark);
@@ -80,6 +102,21 @@ withDefaults(defineProps<{ variant?: ButtonVariants }>(), {
     &:hover {
       border-color: var(--color-primary);
     }
+  }
+
+  &--md {
+    height: 3.5rem;
+    padding: 0 2rem;
+  }
+
+  &--sm {
+    height: 2.8rem;
+    padding: 0 1rem;
+  }
+
+  &--lg {
+    height: 4.2rem;
+    padding: 0 2.5rem;
   }
 }
 </style>

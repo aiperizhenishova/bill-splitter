@@ -59,6 +59,7 @@ async function handleSubmit() {
 
       <BaseButton
         variant="primary"
+        size="md"
         class="register-page__button"
         :disabled="loading"
       >
@@ -123,8 +124,6 @@ async function handleSubmit() {
     right: 1rem;
     width: 2.5rem;
     height: 2.5rem;
-    padding: 0.6rem;
-    gap: 0.5rem;
     color: var(--color-muted-purple);
     border: 0.1rem solid var(--color-light-purple-gray);
     border-radius: var(--border-radius-md);
@@ -151,8 +150,6 @@ async function handleSubmit() {
 
   &__button {
     width: 100%;
-    max-width: 28rem;
-    min-height: 3.5rem;
     margin-top: 0.5rem;
   }
 

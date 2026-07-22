@@ -121,6 +121,7 @@ onMounted(() => {
     <AppHeader>
       <BaseButton
         variant="icon"
+        size="md"
         @click="showLogoutModal = true"
         class="all-sessions__button all-sessions__button--logout"
       >
@@ -154,33 +155,36 @@ onMounted(() => {
           />
 
           <div class="all-sessions__tabs">
-            <button
+            <BaseButton
               class="all-sessions__tab"
+              size="sm"
               :class="{ 'all-sessions__tab--active': statusFilter === 'all' }"
               @click="statusFilter = 'all'"
             >
               Все
-            </button>
+            </BaseButton>
 
-            <button
+            <BaseButton
               class="all-sessions__tab"
+              size="sm"
               :class="{
                 'all-sessions__tab--active': statusFilter === 'active',
               }"
               @click="statusFilter = 'active'"
             >
               Активные
-            </button>
+            </BaseButton>
 
-            <button
+            <BaseButton
               class="all-sessions__tab"
+              size="sm"
               :class="{
                 'all-sessions__tab--active': statusFilter === 'expired',
               }"
               @click="statusFilter = 'expired'"
             >
               Завершённые
-            </button>
+            </BaseButton>
           </div>
         </div>
 
@@ -224,6 +228,7 @@ onMounted(() => {
                 <div class="all-sessions__actions">
                   <BaseButton
                     variant="icon"
+                    size="md"
                     class="all-sessions__button"
                     @click="openDeleteModal(session.id)"
                   >
@@ -232,6 +237,7 @@ onMounted(() => {
 
                   <BaseButton
                     variant="icon"
+                    size="md"
                     class="all-sessions__button all-sessions__button--go-forward"
                     @click="router.push(`/sessions/${session.id}/manage`)"
                   >
@@ -246,6 +252,7 @@ onMounted(() => {
     </div>
     <BaseButton
       variant="primary"
+      size="md"
       class="all-sessions__button--session-create"
       @click="router.push('/sessions/new')"
     >
@@ -296,15 +303,13 @@ onMounted(() => {
     &--logout {
       position: absolute;
       left: 1rem;
-      max-width: 3rem;
-      height: 2.8rem;
-      padding: 0.5rem;
+      width: 2.5rem;
+      height: 2.5rem;
       border: 0.1rem solid var(--color-light-purple-gray);
     }
 
     &--session-create {
       border-radius: var(--border-radius-md);
-      min-height: 3.5rem;
       margin: 1rem;
     }
   }
@@ -341,14 +346,11 @@ onMounted(() => {
 
   &__tab {
     flex: 1;
-    padding: 0.5rem 1rem;
     border-radius: var(--border-radius-md);
     border: 0.1rem solid var(--color-secondary);
     background-color: var(--color-white);
     color: var(--color-muted-purple);
     font-size: var(--font-size);
-    cursor: pointer;
-    transition: all 0.2s ease;
 
     &--active {
       background-color: var(--color-primary);

@@ -124,8 +124,9 @@ onMounted(async () => {
     <AppHeader>
       <BaseButton
         variant="icon"
+        size="md"
         @click="goBack()"
-        class="all-sessions__button all-sessions__button--logout"
+        class="session-manage-page__button session-manage-page__button--back"
       >
         <IconChevronLeft />
       </BaseButton>
@@ -148,8 +149,9 @@ onMounted(async () => {
               @keyup.enter="saveEditName"
             />
             <BaseButton
-              class="session-manage-page__name-save"
               variant="primary"
+              size="md"
+              class="session-manage-page__name-save"
               @click="saveEditName"
             >
               Сохранить
@@ -174,6 +176,7 @@ onMounted(async () => {
         <BaseButton
           v-if="!summary.isExpired"
           variant="primary"
+          size="md"
           class="session-manage-page__copy-button"
           @click="copyLink(sessionId)"
         >
@@ -222,8 +225,9 @@ onMounted(async () => {
 
           <div class="session-manage-page__dish-form-actions">
             <BaseButton
-              class="session-manage-page__dish-submit"
               variant="primary"
+              size="md"
+              class="session-manage-page__dish-submit"
               type="submit"
             >
               {{ editingDishId ? 'Сохранить' : 'Добавить' }}
@@ -232,6 +236,7 @@ onMounted(async () => {
             <BaseButton
               v-if="editingDishId"
               variant="secondary"
+              size="md"
               type="button"
               @click="cancelEdit"
             >
@@ -257,10 +262,13 @@ onMounted(async () => {
               >
             </span>
             <div class="session-manage-page__dish-actions">
-              <BaseButton variant="icon" @click="startEdit(dish)"
+              <BaseButton variant="icon" size="md" @click="startEdit(dish)"
                 ><IconPencil
               /></BaseButton>
-              <BaseButton variant="icon" @click="handleDeleteDish(dish.id)"
+              <BaseButton
+                variant="icon"
+                size="md"
+                @click="handleDeleteDish(dish.id)"
                 ><IconTrash
               /></BaseButton>
             </div>
@@ -293,6 +301,7 @@ onMounted(async () => {
       <div v-if="!summary.isExpired" class="session-manage-page__footer">
         <BaseButton
           variant="danger"
+          size="md"
           class="session-manage-page__finish-button"
           @click="showFinishModal = true"
         >
@@ -323,6 +332,15 @@ onMounted(async () => {
   max-width: 36rem;
   min-height: 100dvh;
   margin: 0 auto;
+
+  &__button--back {
+    position: absolute;
+    left: 1rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: 0.1rem solid var(--color-light-purple-gray);
+  }
 
   &__content {
     display: flex;
@@ -360,11 +378,9 @@ onMounted(async () => {
 
   &__name-save {
     margin: 0.5rem;
-    padding: 1rem;
   }
 
   &__copy-button {
-    min-height: 2rem;
     margin-top: 1rem;
     border-radius: var(--border-radius-lg);
   }
@@ -454,15 +470,10 @@ onMounted(async () => {
     margin: 1rem 0;
   }
 
-  &__dish-submit {
-    min-height: 2rem;
-    padding: 0.8rem 1.5rem;
-  }
-
   &__dish-form-actions {
     display: flex;
     justify-content: flex-end;
-    margin-top: 0.5rem;
+    margin: 1rem;
     gap: 0.5rem;
   }
 
@@ -516,11 +527,6 @@ onMounted(async () => {
     justify-content: center;
     gap: 0.5rem;
     flex-shrink: 0;
-
-    svg {
-      width: 1.25rem;
-      height: 1.25rem;
-    }
   }
 
   &__list {
@@ -574,7 +580,6 @@ onMounted(async () => {
 
   &__finish-button {
     width: 100%;
-    min-height: 3.5rem;
     border-radius: var(--border-radius-lg);
     color: var(--color-dark-red);
     background-color: var(--color-light-pink);
