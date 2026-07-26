@@ -2,18 +2,11 @@
 import { useAuth } from '@/entities/user';
 
 defineOptions({ name: 'StartPage' });
-import {
-  IconMoonFilled,
-  IconSparkle,
-  IconSunFilled,
-  IconArrowRight,
-} from '@tabler/icons-vue';
-import { useTheme } from '@/features/toggle-theme';
+import { IconSparkle, IconArrowRight } from '@tabler/icons-vue';
 import BaseButton from '@/shared/ui/BaseButton.vue';
 import { useRouter } from 'vue-router';
 import ThemeToggle from '@/shared/ui/ThemeToggle.vue';
 
-const { toggleTheme, isDark } = useTheme();
 const router = useRouter();
 const { logout } = useAuth();
 
