@@ -11,7 +11,7 @@ type ButtonVariants =
 
 type ButtonSize = 'sm' | 'md' | 'lg';
 
-const props = withDefaults(
+withDefaults(
   defineProps<{
     variant?: ButtonVariants;
     size?: ButtonSize;

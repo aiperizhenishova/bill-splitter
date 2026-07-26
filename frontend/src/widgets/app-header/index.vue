@@ -1,11 +1,8 @@
 <script setup lang="ts">
+import ThemeToggle from '@/shared/ui/ThemeToggle.vue';
+
 defineOptions({ name: 'AppHeader' });
-import { IconMoonFilled, IconSunFilled, IconSparkle } from '@tabler/icons-vue';
-
-import { useTheme } from '@/features/toggle-theme';
-import BaseButton from '@/shared/ui/BaseButton.vue';
-
-const { toggleTheme, isDark } = useTheme();
+import { IconSparkle } from '@tabler/icons-vue';
 </script>
 
 <template>
@@ -18,14 +15,7 @@ const { toggleTheme, isDark } = useTheme();
 
     <p class="header__tagline">Разделите счёт честно и без споров</p>
 
-    <BaseButton
-      variant="icon"
-      class="header__theme-toggle"
-      @click="toggleTheme()"
-    >
-      <IconSunFilled v-if="isDark" />
-      <IconMoonFilled v-else />
-    </BaseButton>
+    <ThemeToggle />
   </header>
 </template>
 
@@ -71,19 +61,6 @@ const { toggleTheme, isDark } = useTheme();
     font-weight: var(--font-weight-regular);
     text-align: center;
     color: var(--color-muted-purple);
-  }
-
-  &__theme-toggle {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    padding: 0.6rem;
-    gap: 0.5rem;
-    color: var(--color-muted-purple);
-    border: 0.1rem solid var(--color-light-purple-gray);
-    border-radius: var(--border-radius-md);
   }
 }
 </style>

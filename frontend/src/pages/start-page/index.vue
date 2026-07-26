@@ -11,6 +11,7 @@ import {
 import { useTheme } from '@/features/toggle-theme';
 import BaseButton from '@/shared/ui/BaseButton.vue';
 import { useRouter } from 'vue-router';
+import ThemeToggle from '@/shared/ui/ThemeToggle.vue';
 
 const { toggleTheme, isDark } = useTheme();
 const router = useRouter();
@@ -24,14 +25,7 @@ function continueAsGuest() {
 
 <template>
   <div class="start-page">
-    <BaseButton
-      variant="icon"
-      class="start-page__theme-toggle"
-      @click="toggleTheme()"
-    >
-      <IconSunFilled v-if="isDark" />
-      <IconMoonFilled v-else />
-    </BaseButton>
+    <ThemeToggle />
 
     <div class="start-page__content">
       <div class="start-page__logo">

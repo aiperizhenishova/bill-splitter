@@ -1,15 +1,14 @@
 <script setup lang="ts">
 import BaseButton from '@/shared/ui/BaseButton.vue';
-import { IconMoonFilled, IconSparkle, IconSunFilled } from '@tabler/icons-vue';
-import { useTheme } from '@/features/toggle-theme';
+import { IconSparkle } from '@tabler/icons-vue';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuth } from '@/entities/user';
 import BaseInput from '@/shared/ui/BaseInput.vue';
+import ThemeToggle from '@/shared/ui/ThemeToggle.vue';
 
 defineOptions({ name: 'RegisterPage' });
 
-const { toggleTheme, isDark } = useTheme();
 const router = useRouter();
 const { register, loading } = useAuth();
 const email = ref('');
@@ -31,14 +30,7 @@ async function handleSubmit() {
       <h1 class="register-page__title">Bill Splitter</h1>
     </div>
 
-    <BaseButton
-      variant="icon"
-      class="register-page__theme-toggle"
-      @click="toggleTheme()"
-    >
-      <IconSunFilled v-if="isDark" />
-      <IconMoonFilled v-else />
-    </BaseButton>
+    <ThemeToggle />
 
     <div class="register-page__heading">
       <h2 class="register-page__headline">Регистрация</h2>
@@ -116,17 +108,6 @@ async function handleSubmit() {
     font-size: var(--font-size-lg);
     font-weight: var(--font-weight-semibold);
     letter-spacing: -0.03rem;
-  }
-
-  &__theme-toggle {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    color: var(--color-muted-purple);
-    border: 0.1rem solid var(--color-light-purple-gray);
-    border-radius: var(--border-radius-md);
   }
 
   &__heading {

@@ -1,28 +1,19 @@
 <script setup lang="ts">
 import BaseInput from '@/shared/ui/BaseInput.vue';
 import { ref } from 'vue';
-import { IconSparkle, IconMoonFilled, IconSunFilled } from '@tabler/icons-vue';
+import { IconSparkle } from '@tabler/icons-vue';
 import BaseButton from '@/shared/ui/BaseButton.vue';
-import { useTheme } from '@/features/toggle-theme';
+import ThemeToggle from '@/shared/ui/ThemeToggle.vue';
 
 defineOptions({ name: 'JoinForm' });
 
 const name = ref('');
 const emit = defineEmits<{ join: [name: string] }>();
-const { toggleTheme, isDark } = useTheme();
 </script>
 
 <template>
   <div class="join-page">
-    <BaseButton
-      variant="icon"
-      size="sm"
-      class="join-page__theme-toggle"
-      @click="toggleTheme()"
-    >
-      <IconSunFilled v-if="isDark" />
-      <IconMoonFilled v-else />
-    </BaseButton>
+    <ThemeToggle />
 
     <div class="join-page__logo">
       <IconSparkle class="join-page__icon" />
@@ -62,17 +53,6 @@ const { toggleTheme, isDark } = useTheme();
   justify-content: center;
   align-items: center;
   gap: 0.2rem;
-
-  &__theme-toggle {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    width: 2.5rem;
-    height: 2.5rem;
-    color: var(--color-muted-purple);
-    border: 0.1rem solid var(--color-light-purple-gray);
-    border-radius: var(--border-radius-md);
-  }
 
   &__logo {
     display: flex;
