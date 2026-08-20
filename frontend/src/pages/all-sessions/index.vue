@@ -8,7 +8,7 @@ import {
   IconChevronRight,
   IconLogout,
   IconClipboardListFilled,
-  IconTrash,
+  IconTrashFilled,
   IconPlus,
 } from '@tabler/icons-vue';
 import BaseButton from '@/shared/ui/BaseButton.vue';
@@ -194,7 +194,10 @@ onMounted(() => {
             v-for="session in filteredSessions"
             :key="session.id"
           >
-            <div class="all-sessions__info">
+            <div
+              class="all-sessions__info"
+              @click="router.push(`/sessions/${session.id}/manage`)"
+            >
               <div class="all-sessions__title">
                 <h3>{{ session.name }}</h3>
                 <span
@@ -230,16 +233,15 @@ onMounted(() => {
                     variant="icon"
                     size="md"
                     class="all-sessions__button"
-                    @click="openDeleteModal(session.id)"
+                    @click.stop="openDeleteModal(session.id)"
                   >
-                    <IconTrash />
+                    <IconTrashFilled />
                   </BaseButton>
 
                   <BaseButton
                     variant="icon"
                     size="md"
                     class="all-sessions__button all-sessions__button--go-forward"
-                    @click="router.push(`/sessions/${session.id}/manage`)"
                   >
                     <IconChevronRight />
                   </BaseButton>
@@ -295,10 +297,6 @@ onMounted(() => {
   &__button {
     flex-shrink: 0;
     border-radius: var(--border-radius-md);
-
-    &--go-forward {
-      cursor: pointer;
-    }
 
     &--logout {
       position: absolute;
@@ -385,6 +383,7 @@ onMounted(() => {
     display: flex;
     flex-direction: column;
     color: var(--color-muted-purple);
+    cursor: pointer;
   }
 
   &__participants-container {

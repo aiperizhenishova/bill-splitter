@@ -77,6 +77,10 @@ function handleFinish() {
       <p>Режим гостя</p>
     </div>
 
+    <div v-if="isSessionStarted" class="add-dish-page__session-card">
+      <h2 class="add-dish-page__session-title">{{ sessionName }}</h2>
+    </div>
+
     <div v-if="!isSessionStarted" class="add-dish-page__intro">
       <h2 class="add-dish-page__heading">Создать новую сессию</h2>
       <p class="add-dish-page__description">
@@ -263,6 +267,18 @@ function handleFinish() {
     border-radius: var(--border-radius-md);
     color: var(--color-muted-dark);
     background-color: var(--color-light-purple);
+  }
+
+  &__session-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__session-title {
+    padding-top: 1rem;
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-muted-purple);
   }
 
   &__intro {

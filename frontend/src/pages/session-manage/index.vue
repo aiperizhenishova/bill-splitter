@@ -3,11 +3,13 @@ import AppHeader from '@/widgets/app-header/index.vue';
 import { onMounted, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import {
-  IconCopy,
+  IconCopyFilled,
   IconSquareRoundedFilled,
   IconChevronLeft,
-  IconPencil,
-  IconTrash,
+  IconPencilFilled,
+  IconTrashFilled,
+  IconPointFilled,
+  IconBowlSpoonFilled,
 } from '@tabler/icons-vue';
 import { useSessionSummary } from '@/entities/session';
 import { useShareLink } from '@/features/share-link';
@@ -16,9 +18,10 @@ import ConfirmModal from '@/shared/ui/ConfirmModal.vue';
 import router from '@/app/router';
 import { useDishes } from '@/features/manage-dishes';
 import { Dish } from '@/entities/dish';
-import QrUpload from '@/widgets/qr-upload/index.vue';
 import { api } from '@/shared/api/instance';
 import BaseInput from '@/shared/ui/BaseInput.vue';
+import { useToast } from 'vue-toastification';
+import QrUpload from '@/widgets/qr-upload/index.vue';
 
 defineOptions({ name: 'SessionManagePage' });
 
@@ -42,6 +45,8 @@ const newDishPrice = ref<number | null>(null);
 const editingDishId = ref<number | null>(null);
 const isEditingName = ref(false);
 const editedName = ref('');
+const showQrCode = ref(false);
+const toast = useToast();
 
 async function handleFinish() {
   const ok = await finishSession();
@@ -113,6 +118,22 @@ async function saveEditName() {
   await getSummary();
 }
 
+async function onQrUpload(e: Event) {
+  const input = e.target as HTMLInputElement;
+  const file = input.files?.[0];
+  if (!file) return;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const { data } = await api.post(`/sessions/${sessionId}/qr`, formData);
+    if (data?.qrUrl) await getSummary();
+  } catch (e) {
+    toast.error(e instanceof Error ? e.message : 'не удалось загрузить QR код');
+  }
+}
+
 onMounted(async () => {
   await getSummary();
   await getDishes();
@@ -157,16 +178,17 @@ onMounted(async () => {
               Сохранить
             </BaseButton>
           </div>
-          <div class="session-manage-page__status-info">
-            <span
-              class="session-manage-page__status"
-              :class="{
-                'session-manage-page__status--active': !summary.isExpired,
-                'session-manage-page__status--expired': summary.isExpired,
-              }"
-            >
+          <div
+            class="session-manage-page__status-info"
+            :class="{
+              'session-manage-page__status-info--active': !summary.isExpired,
+              'session-manage-page__status-info--expired': summary.isExpired,
+            }"
+          >
+            <span class="session-manage-page__status">
               {{ summary.isExpired ? 'Завершена' : 'Активна' }}
             </span>
+            <IconPointFilled class="session-manage-page__dot-icon" />
             <span class="session-manage-page__count">
               {{ summary.participantCount }}
               {{ getParticipantText(summary.participantCount) }}
@@ -180,31 +202,54 @@ onMounted(async () => {
           class="session-manage-page__copy-button"
           @click="copyLink(sessionId)"
         >
-          <IconCopy />
+          <IconCopyFilled />
           Ссылка
         </BaseButton>
       </div>
 
       <div v-if="!summary.isExpired" class="session-manage-page__qr-card">
         <QrUpload
+          v-if="!summary.qrUrl"
           :session-id="sessionId"
           :qr-url="summary.qrUrl"
           @uploaded="getSummary"
         />
-        <h2 v-if="summary.qrUrl" class="session-manage-page__total">
-          {{ summary.grandTotal }} сом
-        </h2>
-        <p v-if="summary.qrUrl" class="session-manage-page__qr-hint">
-          Покажите гостям, чтобы присоединиться
-        </p>
+
+        <template v-else>
+          <div class="session-manage-page__qr-container">
+            <img
+              v-if="summary.qrUrl"
+              class="session-manage-page__qr-img"
+              :src="summary.qrUrl"
+              alt="QR"
+              @click="showQrCode = true"
+            />
+
+            <label class="session-manage-page__replace-label" for="qr-upload"
+              >Заменить</label
+            >
+          </div>
+
+          <input
+            id="qr-upload"
+            type="file"
+            accept="image/*"
+            style="display: none"
+            @change="onQrUpload"
+          />
+          <h2 v-if="summary.qrUrl" class="session-manage-page__total">
+            {{ summary.grandTotal }} сом
+          </h2>
+          <p v-if="summary.qrUrl" class="session-manage-page__qr-hint">
+            Покажите гостям, чтобы присоединиться
+          </p>
+        </template>
       </div>
 
       <div
         v-if="!summary.isExpired"
         class="session-manage-page__dishes-section"
       >
-        <h3 class="session-manage-page__dishes-title">Меню</h3>
-
         <form
           class="session-manage-page__dish-form"
           @submit.prevent="editingDishId ? handleSaveEdit() : handleAddDish()"
@@ -221,9 +266,7 @@ onMounted(async () => {
               placeholder="Цена"
               type="number"
             />
-          </div>
 
-          <div class="session-manage-page__dish-form-actions">
             <BaseButton
               variant="primary"
               size="md"
@@ -232,9 +275,13 @@ onMounted(async () => {
             >
               {{ editingDishId ? 'Сохранить' : 'Добавить' }}
             </BaseButton>
+          </div>
 
+          <div
+            v-if="editingDishId"
+            class="session-manage-page__dish-form-actions"
+          >
             <BaseButton
-              v-if="editingDishId"
               variant="secondary"
               size="md"
               type="button"
@@ -253,6 +300,9 @@ onMounted(async () => {
             :key="dish.id"
             class="session-manage-page__dish-item"
           >
+            <IconBowlSpoonFilled
+              class="session-manage-page__icon session-manage-page__icon--bowl"
+            />
             <span class="session-manage-page__dish-name">
               <span class="session-manage-page__dish-name-text">{{
                 dish.name
@@ -263,13 +313,13 @@ onMounted(async () => {
             </span>
             <div class="session-manage-page__dish-actions">
               <BaseButton variant="icon" size="md" @click="startEdit(dish)"
-                ><IconPencil
+                ><IconPencilFilled
               /></BaseButton>
               <BaseButton
                 variant="icon"
                 size="md"
                 @click="handleDeleteDish(dish.id)"
-                ><IconTrash
+                ><IconTrashFilled
               /></BaseButton>
             </div>
           </li>
@@ -363,7 +413,7 @@ onMounted(async () => {
   }
 
   &__name {
-    margin: 0.5rem;
+    margin: 1rem 0 0 0.2rem;
     color: var(--color-dark);
     font-size: var(--font-size-md);
     font-weight: var(--font-weight-medium);
@@ -381,7 +431,8 @@ onMounted(async () => {
   }
 
   &__copy-button {
-    margin-top: 1rem;
+    margin: 0.5rem;
+    padding: 0 1.2rem;
     border-radius: var(--border-radius-lg);
   }
 
@@ -389,11 +440,7 @@ onMounted(async () => {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 0.5rem;
-  }
-
-  &__status {
-    padding: 0.25rem 0.5rem;
+    padding: 0.5rem 1rem;
     border-radius: var(--border-radius-md);
     font-size: var(--font-size-sm);
 
@@ -408,19 +455,51 @@ onMounted(async () => {
     }
   }
 
-  &__count {
-    color: var(--color-muted-purple);
-    font-size: var(--font-size-sm);
+  &__dot-icon {
+    width: 0.4rem;
+    height: 0.4rem;
   }
 
   &__qr-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 1.5rem 1rem;
-    margin: 1rem;
+    margin: 0 1rem;
     background-color: var(--color-white);
     border-radius: var(--border-radius-sm);
+  }
+
+  &__qr-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  &__replace-label {
+    position: absolute;
+    top: -0.5rem;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.7rem 1.5rem;
+    max-width: 8.2rem;
+    height: 3.5rem;
+    margin-left: auto;
+    font-weight: var(--font-weight-medium);
+    color: var(--color-muted-purple);
+    background-color: var(--color-secondary);
+    border-radius: var(--border-radius-md);
+    border: 0.1rem solid transparent;
+    cursor: pointer;
+
+    &:hover {
+      border-color: var(--color-primary);
+    }
   }
 
   &__qr-img {
@@ -444,10 +523,7 @@ onMounted(async () => {
   }
 
   &__dishes-section {
-    padding: 1rem;
     margin: 0 1rem 1rem;
-    background-color: var(--color-white);
-    border-radius: var(--border-radius-sm);
   }
 
   &__dishes-title {
@@ -460,7 +536,6 @@ onMounted(async () => {
   &__dish-form {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
   }
 
   &__dish-fields {
@@ -481,6 +556,9 @@ onMounted(async () => {
     list-style: none;
     padding: 0;
     margin: 0;
+    overflow: hidden;
+    border-radius: var(--border-radius-sm);
+    border: 0.1rem solid var(--color-secondary);
   }
 
   &__dish-item {
@@ -488,12 +566,20 @@ onMounted(async () => {
     align-items: center;
     justify-content: space-between;
     gap: 1rem;
-    padding: 0.75rem 0;
-    list-style: none;
+    padding: 0.75rem 1rem;
     border-bottom: 0.1rem solid var(--color-secondary);
+    background-color: var(--color-white);
 
     &:last-child {
       border-bottom: none;
+    }
+  }
+
+  &__icon {
+    color: var(--color-icon);
+    &--bowl {
+      width: var(--icon-sm);
+      height: var(--icon-sm);
     }
   }
 
