@@ -118,12 +118,12 @@ async function saveEditName() {
   await getSummary();
 }
 
-async function onQrUpload(e: Event) {
-  const input = e.target as HTMLInputElement;
+async function onQrUpload(e: globalThis.Event) {
+  const input = e.target as globalThis.HTMLInputElement;
   const file = input.files?.[0];
   if (!file) return;
 
-  const formData = new FormData();
+  const formData = new globalThis.FormData();
   formData.append('file', file);
 
   try {
