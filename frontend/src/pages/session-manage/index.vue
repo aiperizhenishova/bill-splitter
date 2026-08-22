@@ -252,7 +252,7 @@ onMounted(async () => {
       >
         <form
           class="session-manage-page__dish-form"
-          @submit.prevent="editingDishId ? handleSaveEdit() : handleAddDish()"
+          @submit.prevent="handleAddDish"
         >
           <div class="session-manage-page__dish-fields">
             <BaseInput
@@ -273,21 +273,7 @@ onMounted(async () => {
               class="session-manage-page__dish-submit"
               type="submit"
             >
-              {{ editingDishId ? 'Сохранить' : 'Добавить' }}
-            </BaseButton>
-          </div>
-
-          <div
-            v-if="editingDishId"
-            class="session-manage-page__dish-form-actions"
-          >
-            <BaseButton
-              variant="secondary"
-              size="md"
-              type="button"
-              @click="cancelEdit"
-            >
-              Отмена
+              Добавить
             </BaseButton>
           </div>
         </form>
@@ -358,6 +344,38 @@ onMounted(async () => {
           <IconSquareRoundedFilled />
           Завершить сессию
         </BaseButton>
+      </div>
+    </div>
+
+    <div
+      v-if="editingDishId"
+      class="session-manage-page__overlay"
+      @click="cancelEdit"
+    >
+      <div class="session-manage-page__edit-popup" @click.stop>
+        <h3 class="session-manage-page__edit-title">Редактировать</h3>
+
+        <div class="session-manage-page__edit-fields">
+          <BaseInput
+            v-model="newDishName"
+            placeholder="Название блюда"
+            type="text"
+          />
+          <BaseInput
+            v-model.number="newDishPrice"
+            placeholder="Цена"
+            type="number"
+          />
+        </div>
+
+        <div class="session-manage-page__edit-buttons">
+          <BaseButton variant="ghost" size="md" @click="cancelEdit">
+            Отменить
+          </BaseButton>
+          <BaseButton variant="primary" size="md" @click="handleSaveEdit">
+            Сохранить
+          </BaseButton>
+        </div>
       </div>
     </div>
 
@@ -545,13 +563,6 @@ onMounted(async () => {
     margin: 1rem 0;
   }
 
-  &__dish-form-actions {
-    display: flex;
-    justify-content: flex-end;
-    margin: 1rem;
-    gap: 0.5rem;
-  }
-
   &__dish-list {
     list-style: none;
     padding: 0;
@@ -669,6 +680,51 @@ onMounted(async () => {
     border-radius: var(--border-radius-lg);
     color: var(--color-dark-red);
     background-color: var(--color-light-pink);
+  }
+
+  &__overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+
+  &__edit-popup {
+    background: var(--color-white);
+    border-radius: var(--border-radius-md);
+    padding: 1.5rem;
+    width: 100%;
+    max-width: 26rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  &__edit-title {
+    font-size: var(--font-size-md);
+    font-weight: var(--font-weight-regular);
+    color: var(--color-dark);
+  }
+
+  &__edit-fields {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    input {
+      background-color: var(--color-light-lavender);
+      color: var(--color-dark);
+      border: none;
+    }
+  }
+
+  &__edit-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
   }
 }
 </style>

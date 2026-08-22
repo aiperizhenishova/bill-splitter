@@ -16,8 +16,8 @@ const emit = defineEmits<{
 </script>
 
 <template>
-  <div class="confirm-modal-overlay" @click.self="emit('cancel')">
-    <div class="confirm-modal">
+  <div class="confirm-modal" @click.self="emit('cancel')">
+    <div class="confirm-modal__window">
       <h3 class="confirm-modal__title">{{ title }}</h3>
       <p v-if="description" class="confirm-modal__description">
         {{ description }}
@@ -36,7 +36,7 @@ const emit = defineEmits<{
 </template>
 
 <style lang="scss">
-.confirm-modal-overlay {
+.confirm-modal {
   position: fixed;
   inset: 0;
   display: flex;
@@ -45,27 +45,29 @@ const emit = defineEmits<{
   background-color: rgba(0, 0, 0, 0.4);
   z-index: 1000;
   padding: 1rem;
-}
 
-.confirm-modal {
-  width: 100%;
-  max-width: 24rem;
-  padding: 1.5rem;
-  border-radius: var(--border-radius-lg);
-  background-color: var(--color-white);
-  border: 0.1rem solid var(--color-light-purple-gray);
+  &__window {
+    width: 100%;
+    max-width: 26rem;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background: var(--color-white);
+    border-radius: var(--border-radius-md);
+    border: 0.1rem solid var(--color-light-lavender);
+  }
 
   &__title {
-    font-family: var(--font-main), serif;
     font-size: var(--font-size-md);
     font-weight: var(--font-weight-regular);
-    text-align: center;
+    text-align: left;
     color: var(--color-dark);
     margin: 0 0 0.5rem;
   }
 
   &__description {
-    text-align: center;
+    text-align: left;
     font-size: var(--font-size);
     color: var(--color-muted-purple);
     margin: 0 0 1.5rem;
@@ -73,11 +75,15 @@ const emit = defineEmits<{
 
   &__actions {
     display: flex;
-    gap: 0.5rem;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
 
     button {
-      flex: 1;
-      min-height: 3.5rem;
+      flex: none;
+      width: auto;
+      min-height: auto;
+      padding: 0.7rem 1.5rem;
       border-radius: var(--border-radius-md);
     }
   }

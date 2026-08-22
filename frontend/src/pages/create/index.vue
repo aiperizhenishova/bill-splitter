@@ -420,15 +420,15 @@ function handleFinish() {
   }
 
   &__edit-popup {
-    background: var(--color-white);
-    border-radius: var(--border-radius-md);
-    border: 0.1rem solid var(--color-light-lavender);
-    padding: 1.5rem;
     width: 100%;
     max-width: 26rem;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    background: var(--color-white);
+    border-radius: var(--border-radius-md);
+    border: 0.1rem solid var(--color-light-lavender);
   }
 
   &__edit-actions {
